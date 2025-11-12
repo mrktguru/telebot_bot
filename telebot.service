@@ -1,0 +1,17 @@
+[Unit]
+Description=Telegram Bot Service
+After=network.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/telebot
+Environment="PATH=/telebot/venv/bin"
+ExecStart=/telebot/venv/bin/python /telebot/bot.py
+Restart=always
+RestartSec=10
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
