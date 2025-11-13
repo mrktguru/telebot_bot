@@ -6,8 +6,7 @@ After=network.target
 Type=simple
 User=root
 WorkingDirectory=/telebot
-Environment="PATH=/telebot/venv/bin"
-ExecStart=/telebot/venv/bin/python /telebot/bot.py
+ExecStart=/bin/bash /telebot/start.sh
 Restart=always
 RestartSec=10
 StandardOutput=journal
