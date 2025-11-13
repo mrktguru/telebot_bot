@@ -122,10 +122,25 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE) ->
 
         reply_markup = InlineKeyboardMarkup(keyboard)
 
-        await query.edit_message_caption(
-            caption=MAIN_MENU_MESSAGE,
-            reply_markup=reply_markup
-        )
+        # Проверяем, есть ли фото в сообщении
+        try:
+            if query.message.photo:
+                await query.edit_message_caption(
+                    caption=MAIN_MENU_MESSAGE,
+                    reply_markup=reply_markup
+                )
+            else:
+                await query.edit_message_text(
+                    text=MAIN_MENU_MESSAGE,
+                    reply_markup=reply_markup
+                )
+        except Exception as e:
+            logger.error(f"Ошибка при редактировании сообщения: {e}")
+            # Если не получилось отредактировать, отправляем новое сообщение
+            await query.message.reply_text(
+                MAIN_MENU_MESSAGE,
+                reply_markup=reply_markup
+            )
 
     # Обработка выбора пунктов меню
     elif query.data in MENU_ITEMS:
@@ -141,10 +156,25 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE) ->
 
         reply_markup = InlineKeyboardMarkup(keyboard)
 
-        await query.edit_message_caption(
-            caption=item['message'],
-            reply_markup=reply_markup
-        )
+        # Проверяем, есть ли фото в сообщении
+        try:
+            if query.message.photo:
+                await query.edit_message_caption(
+                    caption=item['message'],
+                    reply_markup=reply_markup
+                )
+            else:
+                await query.edit_message_text(
+                    text=item['message'],
+                    reply_markup=reply_markup
+                )
+        except Exception as e:
+            logger.error(f"Ошибка при редактировании сообщения: {e}")
+            # Если не получилось отредактировать, отправляем новое сообщение
+            await query.message.reply_text(
+                item['message'],
+                reply_markup=reply_markup
+            )
 
 
 async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
